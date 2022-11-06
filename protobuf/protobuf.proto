@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package protobuf;
+
+option go_package = "./protobuf";
+
+message Ticker {
+    float value = 1;
+
+    bool bs = 2; // buy/sell
+}
+
+message Signal {
+    int32 value = 1;
+}
+
+service TradeService {
+    rpc StreamTicker(stream Signal) returns (stream Ticker) {} // Server recieves signals, client receives tickers
+}
+
+// protoc --proto_path=protobuf --go_out=protobuf --go_opt=paths=source_relative \
+//   --go-grpc_out=protobuf --go-grpc_opt=paths=source_relative \
+//   protobuf/*.proto
